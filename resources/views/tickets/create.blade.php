@@ -3,7 +3,7 @@
 @section('content')
 
 
-<div class="container bg-light mt-5 p-3">
+<div class="w-25 p-3 bg-light mt-5 p-3 mx-auto">
   <form action="{{ route ('storeTicket')}} " method="post">
     @csrf
     <h2 class="text-center m-3" >Add Question</h2>
@@ -31,12 +31,19 @@
 
         <div class="form-group">
           <label for="services">Services</label>
-          <input type="text" class="form-control" id="services" name="services" placeholder="">
+          <!-- <input type="text" class="form-control" id="services" name="services" placeholder=""> -->
+          <select name="services" placeholder="service">
+          @foreach ($service as $Service)
+          <option value ="{{ $Service->id }}" > {{ $Service->service }}</option>
+          @endforeach
+        </select>
         </div>
       </div>
 
     </div>
 
+    <input type="hidden" class="form-control" name="status" value="1">
+<!-- 
     <div class="row">
       <div class="col-md-6">
 
@@ -46,9 +53,10 @@
         </div>
       </div>
 
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+    </div> -->
+  <div class="d-flex justify-content-around">
+    <button type="submit" class="btn bg-primary btn-primary">Submit</button>
+  </div>
+</form>
 </div>
 @endsection

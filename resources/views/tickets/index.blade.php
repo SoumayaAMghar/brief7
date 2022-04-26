@@ -1,11 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row ">
+
+<div class="d-flex flex-row m-5 justify-content-between">
+	<span >
+		<a class="navbar-brand " href="/"> Support Tickets System</a>
+    </span>
+    @if(Auth::user()->role == 'user')
+    <span class="">
+        <a  class="btn btn-success" href="/tickets/add"> Add Ticket </a>
+    </span>
+    @endif
+
+</div>
+<div class="container m-3">
+    <div class="row">
         @foreach ($tickets as $ticket)
 
-        <div class="card col-lg-4 col-md-6 col-sm-12 p-0 mb-2">
+        <div class="card col-lg-3 col-md-6 col-sm-12 p-0 mb-2 m-3 ">
             <a href="/tickets/{{$ticket->id}}">
                 <div class="card-header">
                     {{$ticket->summary}}

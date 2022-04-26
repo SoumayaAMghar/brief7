@@ -41,16 +41,17 @@
                     @foreach ($tickets as $ticket)
                         <tr>
                         <th scope="row">{{$ticket->id}}</th>
-                        <th scope="row">{{$ticket->service_id}}</th>
-                        <th scope="row">{{$ticket->user_id}}</th>
-                        <th scope="row">{{$ticket->statut_id}}</th>
+                        <th scope="row">{{$ticket->service->service}}</th>
+                        <th scope="row">{{$ticket->user->name}}</th>
+                        <th scope="row">{{$ticket->statut->statut}}</th>
                         <th scope="row">{{$ticket->created_at}}</th>
                         <th scope="row">
-                        <form action="/tickets/{{$ticket->id}}" method="post">
+                        <form action=" {{ route('responses') }} " method="post">
                                 @csrf
-                                @method('delete')
-                                <button class="border-0 ml-2 badge badge-danger">Delete</button>
+                                <input type="text" name="ticket_id" value="{{ $ticket->id }}" hidden>
+                                <button class="border-0 ml-2 badge badge-success">Respond</button>
                         </form>
+                        <!-- <a  class="border-0 ml-2 badge badge-success" href="/responses">Respond</a> -->
                         </th>
                         </tr>
                     @endforeach

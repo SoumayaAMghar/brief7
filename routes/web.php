@@ -22,5 +22,7 @@ Route::get('/users',[UserController::class, 'getUsers'])->middleware(['auth'])->
 Route::get('/tickets',[TicketController::class, 'index'])->middleware(['auth'])->name('index');
 Route::get('/tickets/add', [TicketController::class, 'create'])->name('addTicket')->middleware('auth');
 Route::post('/tickets', [TicketController::class, 'store'])->name('storeTicket')->middleware('auth');
+Route::post('/responses', [ResponseController::class, 'index'])->name('responses')->middleware('auth');
+Route::post('/response', [ResponseController::class, 'store'])->middleware('auth')->name('addReply');
 
 require __DIR__.'/auth.php';

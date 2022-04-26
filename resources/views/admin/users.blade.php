@@ -15,18 +15,33 @@
                     @auth
                     @if(Auth::user()->role == 'admin')
                     <h5>Registred Users:</h5>
-                    <ul>
-                        @foreach ($users as $user)
-                        <li class="row">{{$user->name}}
-                            <form action="/users/{{$user->id}}" method="post">
+
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($users as $user)
+                        <tr>
+                        <th scope="row">{{$user->id}}</th>
+                        <th scope="row">{{$user->name}}</th>
+                        <th scope="row">{{$user->email}}</th>
+                        <th scope="row">
+                        <form action="/users/{{$user->id}}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class="border-0 ml-2 badge badge-danger">Delete</button>
                             </form>
-                        </li>
-                        @endforeach
-
-                    </ul>
+                            </th>
+                            </tr>
+                    @endforeach
+                    </tbody>
+                    </table> 
                     @endif
                     @endauth
 

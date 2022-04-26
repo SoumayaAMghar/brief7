@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('answers', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('ticket_id')->constrained();
+            $table->text('response');
         });
     }
 

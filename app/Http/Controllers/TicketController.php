@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Models\Service;
+
+
 
 class TicketController extends Controller
 {
@@ -15,8 +18,18 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::all();
-        return view('dashboard', ['tickets' => $tickets]);
+        
+        if(Auth::user()->role == 'admin'){
+            $tickets = Ticket::all();
+           return view('dashboard', ['tickets' => $tickets]); 
+        }
+        else{
+            $user= Auth::id();
+            $tickets = Ticket::all()->where('user_id','=',$user);
+
+            return view('tickets.index', ['tickets' => $tickets]); 
+        }
+            
     }
     public function question(){
         $tickets = Ticket::where('user_id', Auth::id())->get();
@@ -29,7 +42,8 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.create');
+        $service=Service::all();
+        return view('tickets.create',['service'=>$service]);
     }
     public function answer()
     {
@@ -43,12 +57,13 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $ticket = new Ticket();
 
         $ticket->summary = request('summary');
         $ticket->description = request('description');
         $ticket->service_id = request('services');
-        $ticket->statut_id = request('statuts');
+        $ticket->statut_id = request('status');
         $ticket->user_id = Auth::id();
 
         $ticket->save();
