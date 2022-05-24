@@ -19,7 +19,9 @@ class ResponseController extends Controller
     {   
         // dd($request);
         $ticket = Ticket::findOrFail($request->ticket_id);
-        $responses = Response::where('ticket_id','=',$request->ticket_id);
+        // $responses = Response::where('ticket_id','=',$request->ticket_id);
+        $responses = $ticket->response;
+        // dd($responses);
       
         return view('responses.index', ['responses' => $responses, 'ticket' => $ticket]);
     }

@@ -32,7 +32,7 @@
                         <th scope="col">Tickets</th>
                         <th scope="col">Services</th>
                         <th scope="col">Submited by</th>
-                        <th scope="col">Statuts</th>
+                        <!-- <th scope="col">Statuts</th> -->
                         <th scope="col">Date</th>
                         <th scope="col">Actions</th>
                         </tr>
@@ -43,7 +43,7 @@
                         <th scope="row">{{$ticket->id}}</th>
                         <th scope="row">{{$ticket->service->service}}</th>
                         <th scope="row">{{$ticket->user->name}}</th>
-                        <th scope="row">{{$ticket->statut->statut}}</th>
+                        <!-- <th scope="row">{{$ticket->statut->statut}}</th> -->
                         <th scope="row">{{$ticket->created_at}}</th>
                         <th scope="row">
                         <form action=" {{ route('responses') }} " method="post">

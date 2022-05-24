@@ -18,4 +18,7 @@ class Ticket extends Model
     public function statut(){
         return $this->belongsTo(Statut::class);
     }
+    public function response(){
+        return $this->hasMany(Response::class);
+    }
 }
