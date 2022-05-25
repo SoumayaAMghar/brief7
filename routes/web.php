@@ -1,6 +1,9 @@
 <?php
-
-namespace App\Http\Controllers;
+use App\Http\Controllers\TicketsController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UsersController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +17,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/',[TicketController::class, 'index'])->middleware(['auth'])->name('dashboard');
-Route::delete('/users/{id}',[UserController::class, 'destroy'])->middleware(['auth'])->name('delete');
-Route::get('/users',[UserController::class, 'getUsers'])->middleware(['auth'])->name('users');
-Route::get('/tickets',[TicketController::class, 'index'])->middleware(['auth'])->name('index');
-Route::get('/tickets/add', [TicketController::class, 'create'])->name('addTicket')->middleware('auth');
-Route::post('/tickets', [TicketController::class, 'store'])->name('storeTicket')->middleware('auth');
-Route::post('/responses', [ResponseController::class, 'index'])->name('responses')->middleware('auth');
-Route::post('/response', [ResponseController::class, 'store'])->middleware('auth')->name('addReply');
+// Auth::routes();
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+// Routes for tickets 
+Route::group([], function () {
+    Route::get('/newticket', [TicketsController::class, 'create'])->middleware(['auth'])->name('newticket');
+    Route::post('/newticket', [TicketsController::class, 'store'])->middleware(['auth']);
+    Route::get('/', [TicketsController::class, 'userTickets'])->middleware(['auth']);
+    Route::get('/tickets/{ticket_id}', [TicketsController::class, 'show'])->middleware(['auth']);
+
+}
+);
+
+// Routes for Comments
+Route::get('/comment', [CommentsController::class, 'create'])->middleware(['auth']);
+Route::post('/comment', [CommentsController::class, 'store'])->middleware(['auth']);
+
+// admin tickets routes
+Route::get('/', [TicketsController::class, 'index'])->middleware(['auth'])->name('admin.tickets');
+Route::post('/admin/close_ticket/{ticket_id}', [TicketsController::class, 'close'])->middleware(['auth'])->name('admin.close_ticket');
+Route::post('/admin/open_ticket/{ticket_id}', [TicketsController::class, 'open'])->middleware(['auth'])->name('admin.open_ticket');
+
+// admin categories routes
+Route::get('/admin/add_category', [CategoryController::class, 'create'])->middleware(['auth'])->name('admin.categories_add');
+Route::post('/admin/add_category', [CategoryController::class, 'store'])->middleware(['auth'])->name('admin.categories_add');
+
+// admin users routes
+Route::get('/admin/users', [UsersController::class, 'index'])->middleware(['auth'])->name('admin.users');
+// delete users from the database
+Route::delete('/admin/users/{id}', [UsersController::class, 'destroy'])->middleware(['auth'])->name('admin.users_delete');
+
 
 require __DIR__.'/auth.php';

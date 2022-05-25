@@ -1,47 +1,80 @@
 @extends('layouts.app')
 
+@section('title', 'All Tickets')
+
 @section('content')
 
-<div class="d-flex flex-row m-5 justify-content-between">
-	<span >
-		<a class="navbar-brand " href="/"> Support Tickets System</a>
-    </span>
-    @if(Auth::user()->role == 'user')
-    <span class="">
-        <a  class="btn btn-success" href="/tickets/add"> Add Ticket </a>
-    </span>
-    @endif
-
+<div>
+	<h5 class="text-center"> Tickets</h5>
 </div>
-<div class="container m-3">
-    <div class="row">
-        @foreach ($tickets as $ticket)
 
-        <div class="card col-lg-3 col-md-6 col-sm-12 p-0 mb-2 m-3 ">
-            <a href="/tickets/{{$ticket->id}}">
-                <div class="card-header">
-                    {{$ticket->summary}}
-                </div>
-            </a>
+<div style="height:500px" class="panel-body flex align-items-center ">
 
-            <div class="card-body">
-                <p class="card-text">{{$ticket->description}}</p>
-            </div>
-            <div class="card-footer text-muted d-flex justify-content-between align-items-center">
-                {{$ticket->created_at}}
-                @auth
-                @if(Auth::user()->role == 'admin')
-                <form action="/tickets/{{$ticket->id}}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-                @endif
-                @endauth
-            </div>
-        </div>
-        @endforeach
-    </div>
+	@if ($tickets->isEmpty())
+		<p>There are currently no tickets.</p>
+	@else
+	<div class="container">
+		<table class="table ">
+			@include('includes.flash')
+			<thead>
+				<tr>
+					<th>Category</th>
+					<th>Title</th>
+					<th>Status</th>
+					<th>Last Updated</th>
+					<th style="text-align:center" colspan="2">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach ($tickets as $ticket)
+				<tr>
+					<td>
+					@foreach ($categories as $category)
+						@if ($category->id === $ticket->category_id)
+							{{ $category->name }}
+						@endif
+					@endforeach
+					</td>
+					<td>
+						<a href="{{ url('tickets/'. $ticket->ticket_id) }}">
+							#{{ $ticket->ticket_id }} - {{ $ticket->title }}
+						</a>
+					</td>
+					<td>
+					@if ($ticket->is_resolved === 'Open')
+						<span class="label label-success">{{ $ticket->is_resolved }}</span>
+					@else
+						<span class="label label-danger">{{ $ticket->is_resolved }}</span>
+					@endif
+					</td>
+					<td>{{ $ticket->updated_at }}</td>
+					<td>
+						<a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-primary">Comment</a>
+					</td>
+					<td>
+						<div class="d-flex ">
+						<form action="{{ url('admin/close_ticket/' . $ticket->ticket_id) }}" method="POST">
+							{!! csrf_field() !!}
+							<button type="submit" class="btn btn-danger mr-2">Close</button>
+						</form>
+						
+						<form action="{{ url('admin/open_ticket/' . $ticket->ticket_id) }}" method="POST">
+							{!! csrf_field() !!}
+							<button type="submit" class="btn btn-success">Open</button>
+						</form>
+
+						</div>
+						
+					</td>
+				</tr>
+			@endforeach
+			</tbody>
+		</table>
+		
+		</div>
+
+		{{ $tickets->render() }}
+	@endif
 </div>
 
 @endsection

@@ -6,28 +6,25 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                        {{-- <x-application-logo class="block h-10 w-auto fill-current text-gray-600" /> --}}
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    @if(Auth::user()->role == 'admin')
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                @if (Auth::user()->is_admin)
+                    <x-nav-link href="{{ url('/admin/users') }}">
                         {{ __('Users') }}
+                        
                     </x-nav-link>
-                    @endif
-                    
-
-
+                @endif
+                    {{-- @if (Auth::user()->is_admin)
+                        <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
+                            {{ __('Admin') }}
+                        </x-nav-link>
+                    @endif --}}
                 </div>
             </div>
-
-            
-				
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
