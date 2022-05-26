@@ -56,7 +56,7 @@
     </div>
 
 
-    <div class="mt-5  mb-4  w-75">
+    <div class="mt-5  mb-4  w-75" style="display: flex; flex-direction : column-reverse;">
         @foreach ($responses as $response)
         <div class="border ml-3 flex flex-col mt-3 rounded-lg " style="background-color: #fff;">
 
