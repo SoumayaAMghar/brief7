@@ -41,17 +41,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    	/* Specifies the one to many relationship between a User and Comments. */
-        
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-    	/* Specifies the one to many relationship between a User and Tickets. */
-
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 }
